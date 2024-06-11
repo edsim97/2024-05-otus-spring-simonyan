@@ -28,9 +28,12 @@ public class CsvQuestionDao implements QuestionDao {
 
         try (var questionsCsvStream = classLoader.getResourceAsStream(fileNameProvider.getTestFileName())) {
 
-            assert questionsCsvStream != null;
+            if (questionsCsvStream == null) {
+
+                throw new QuestionReadException("CSV resource with questions not found.");
+            }
             return readQuestionsFromCsv(questionsCsvStream);
-        } catch (IOException | AssertionError e) {
+        } catch (IOException e) {
 
             throw new QuestionReadException("Error occurred while reading questions from CSV resource.", e);
         }
