@@ -18,24 +18,30 @@ public class TestServiceImpl implements TestService {
     @Override
     public void executeTest() {
 
-        ioService.printLine("");
+        ioService.printEmptyLine();
         ioService.printFormattedLine("Please answer the questions below%n");
         // Получить вопросы из дао и вывести их с вариантами ответов
-        questionDao.findAll().forEach(this::askQuestion);
+        final List<Question> questions = questionDao.findAll();
+        IntStream.range(0, questions.size())
+            .forEach(index -> this.askQuestion(index, questions.get(index)));
     }
 
-    private void askQuestion(Question question) {
+    private void askQuestion(int index, Question question) {
 
+        ioService.printEmptyLine();
+        ioService.printFormattedLine("Question %d:", index);
         ioService.printLine(question.text());
-        ioService.printLine("");
-        final List<Answer> answers = question.answers();
-        IntStream.range(0, answers.size())
-            .forEachOrdered(index -> printAnswer(index, answers.get(index)));
+        ioService.printEmptyLine();
+        printAnswers(question.answers());
+    }
+
+    private void printAnswers(List<Answer> answers) {
+
+        IntStream.range(0, answers.size()).forEachOrdered(index -> printAnswer(index, answers.get(index)));
     }
 
     private void printAnswer(int index, Answer answer) {
 
         ioService.printFormattedLine("%s. %s", index, answer.text());
-        ioService.printLine("");
     }
 }
