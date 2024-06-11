@@ -1,6 +1,5 @@
 package ru.otus.hw.dao;
 
-import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import lombok.RequiredArgsConstructor;
 import ru.otus.hw.config.TestFileNameProvider;
@@ -11,7 +10,6 @@ import ru.otus.hw.exceptions.QuestionReadException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,8 +30,7 @@ public class CsvQuestionDao implements QuestionDao {
 
             assert questionsCsvStream != null;
             return readQuestionsFromCsv(questionsCsvStream);
-        }
-        catch (IOException | AssertionError e) {
+        } catch (IOException | AssertionError e) {
 
             throw new QuestionReadException("Error occurred while reading questions from CSV resource.", e);
         }
@@ -44,6 +41,8 @@ public class CsvQuestionDao implements QuestionDao {
         try (var streamReader = new InputStreamReader(questionsCsvStream)) {
 
             return new CsvToBeanBuilder<QuestionDto>(streamReader)
+                .withType(QuestionDto.class)
+                .withSeparator(';')
                 .withSkipLines(1)
                 .build()
                 .stream()
