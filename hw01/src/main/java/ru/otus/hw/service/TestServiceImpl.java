@@ -23,13 +23,13 @@ public class TestServiceImpl implements TestService {
         // Получить вопросы из дао и вывести их с вариантами ответов
         final List<Question> questions = questionDao.findAll();
         IntStream.range(0, questions.size())
-            .forEach(index -> this.askQuestion(index, questions.get(index)));
+            .forEach(index -> this.askQuestion(index + 1, questions.get(index)));
     }
 
-    private void askQuestion(int index, Question question) {
+    private void askQuestion(int questionNumber, Question question) {
 
         ioService.printEmptyLine();
-        ioService.printFormattedLine("Question %d:", index);
+        ioService.printFormattedLine("Question %d:", questionNumber);
         ioService.printLine(question.text());
         ioService.printEmptyLine();
         printAnswers(question.answers());
@@ -37,11 +37,11 @@ public class TestServiceImpl implements TestService {
 
     private void printAnswers(List<Answer> answers) {
 
-        IntStream.range(0, answers.size()).forEachOrdered(index -> printAnswer(index, answers.get(index)));
+        IntStream.range(0, answers.size()).forEachOrdered(index -> printAnswer(index + 1, answers.get(index)));
     }
 
-    private void printAnswer(int index, Answer answer) {
+    private void printAnswer(int answerNumber, Answer answer) {
 
-        ioService.printFormattedLine("%s. %s", index, answer.text());
+        ioService.printFormattedLine("%s. %s", answerNumber, answer.text());
     }
 }
