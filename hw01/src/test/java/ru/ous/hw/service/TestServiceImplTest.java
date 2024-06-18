@@ -1,11 +1,12 @@
 package ru.ous.hw.service;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
@@ -17,39 +18,60 @@ import java.util.Arrays;
 import java.util.List;
 
 @DisplayName("Класс TestServiceImpl")
+@ExtendWith(MockitoExtension.class)
 public class TestServiceImplTest {
 
-    private final IOService ioService = Mockito.mock(IOService.class);
+    @Mock
+    private IOService ioService;
 
-    private final QuestionDao questionDao = Mockito.mock(QuestionDao.class);
-
-    private StringBuilder stringBuilder;
-
-    private TestService testService;
-
-    @BeforeEach
-    public void setUpStreams() {
-
-        this.testService = new TestServiceImpl(ioService, questionDao);
-        this.stringBuilder = new StringBuilder();
-    }
+    @Mock
+    private QuestionDao questionDao;
 
     @Test
     @DisplayName("корректно выводит данные вопросов")
     void shouldHaveCorrectOutput() {
 
-        Mockito.doAnswer(this::mockIoServicePrintEmptyLine)
+        final TestService testService = new TestServiceImpl(this.ioService, this.questionDao);
+        final StringBuilder stringBuilder = new StringBuilder();
+
+
+        Mockito.doAnswer(i -> stringBuilder.append(System.lineSeparator()))
             .when(ioService)
             .printEmptyLine();
-        Mockito.doAnswer(this::mockIoServicePrintLine)
+
+        Mockito.doAnswer(
+            invocation -> stringBuilder.append(invocation.getArgument(0, String.class)).append(System.lineSeparator())
+        )
             .when(ioService)
             .printLine(Mockito.any());
 
-        Mockito.doAnswer(this::mockIoServicePrintFormattedLine)
+        Mockito.doAnswer(invocation ->
+            stringBuilder.append(
+                String.format(
+                    invocation.getArgument(0, String.class),
+                    Arrays.copyOfRange(invocation.getArguments(), 1, invocation.getArguments().length)
+                )
+            )
+            .append("\n")
+        )
             .when(ioService)
             .printFormattedLine(Mockito.any(), Mockito.any(Object[].class));
 
-        Mockito.doReturn(List.of(createSimpleQuestion()))
+        final Question question = Question.builder()
+            .text("test")
+            .answers(List.of(
+                Answer.builder()
+                    .text("test1")
+                    .isCorrect(true)
+                    .build(),
+                Answer.builder()
+                    .text("test2")
+                    .isCorrect(true)
+                    .build()
+            ))
+            .build();
+
+        Mockito.doReturn(List.of(question))
             .when(questionDao)
             .findAll();
 
@@ -64,53 +86,10 @@ public class TestServiceImplTest {
             Question 1:
             test
             
-            1. test
-            2. test
+            1. test1
+            2. test2
             """,
-            this.stringBuilder.toString()
+            stringBuilder.toString()
         );
-    }
-
-    private Question createSimpleQuestion() {
-
-        return Question.builder()
-            .text("test")
-            .answers(List.of(
-                createSimpleAnswer(),
-                createSimpleAnswer()
-            ))
-            .build();
-    }
-
-    private Answer createSimpleAnswer() {
-
-        return Answer.builder()
-            .text("test")
-            .isCorrect(true)
-            .build();
-    }
-
-    private Object mockIoServicePrintEmptyLine(InvocationOnMock invocation) {
-
-        this.stringBuilder.append("\n");
-        return null;
-    }
-
-    private Object mockIoServicePrintLine(InvocationOnMock invocation) {
-
-        this.stringBuilder.append(invocation.getArgument(0, String.class)).append("\n");
-        return null;
-    }
-
-    private Object mockIoServicePrintFormattedLine(InvocationOnMock invocation) {
-
-        this.stringBuilder.append(
-            String.format(
-                invocation.getArgument(0, String.class),
-                Arrays.copyOfRange(invocation.getArguments(), 1, invocation.getArguments().length)
-            )
-        );
-        this.stringBuilder.append("\n");
-        return null;
     }
 }
