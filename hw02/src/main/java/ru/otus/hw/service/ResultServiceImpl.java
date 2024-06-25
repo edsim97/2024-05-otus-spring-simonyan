@@ -1,10 +1,12 @@
 package ru.otus.hw.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.otus.hw.config.TestConfig;
 import ru.otus.hw.domain.TestResult;
 
 @RequiredArgsConstructor
+@Service
 public class ResultServiceImpl implements ResultService {
 
     private final TestConfig testConfig;
@@ -23,6 +25,6 @@ public class ResultServiceImpl implements ResultService {
             ioService.printLine("Congratulations! You passed test!");
             return;
         }
-        ioService.printLine("Sorry. You fail test.");
+        ioService.printLine("Sorry. You failed test.");
     }
 }

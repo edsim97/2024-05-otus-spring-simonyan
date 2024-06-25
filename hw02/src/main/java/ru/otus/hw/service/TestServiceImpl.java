@@ -1,6 +1,7 @@
 package ru.otus.hw.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
+@Service
 public class TestServiceImpl implements TestService {
 
     private final IOService ioService;
@@ -22,26 +24,36 @@ public class TestServiceImpl implements TestService {
 
         ioService.printEmptyLine();
         ioService.printFormattedLine("Please answer the questions below%n");
-        // Получить вопросы из дао и вывести их с вариантами ответов
+
         final List<Question> questions = questionDao.findAll();
         var testResult = new TestResult(student);
-        IntStream.range(0, questions.size())
-            .forEach(index -> this.askQuestion(index + 1, questions.get(index)));
 
-        for (var question: questions) {
-            var isAnswerValid = false; // Задать вопрос, получить ответ
+        for (int i = 0; i < questions.size(); i++) {
+
+            var question = questions.get(i);
+            var isAnswerValid = askQuestion(i + 1, question);
             testResult.applyAnswer(question, isAnswerValid);
         }
         return testResult;
     }
 
-    private void askQuestion(int questionNumber, Question question) {
+    private boolean askQuestion(int questionNumber, Question question) {
 
         ioService.printEmptyLine();
         ioService.printFormattedLine("Question %d:", questionNumber);
         ioService.printLine(question.text());
         ioService.printEmptyLine();
         printAnswers(question.answers());
+
+        final int answerCount = question.answers().size();
+        var answer = ioService.readIntForRangeWithPrompt(
+            1,
+            answerCount,
+            "Choose right answer number.",
+            String.format("Please enter a number from 1 to %s", answerCount)
+        );
+
+        return question.answers().get(answer - 1).isCorrect();
     }
 
     private void printAnswers(List<Answer> answers) {

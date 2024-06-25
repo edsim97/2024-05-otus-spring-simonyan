@@ -4,12 +4,14 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
+import ru.otus.hw.domain.Student;
 import ru.otus.hw.service.IOService;
 import ru.otus.hw.service.TestService;
 import ru.otus.hw.service.TestServiceImpl;
@@ -27,11 +29,13 @@ public class TestServiceImplTest {
     @Mock
     private QuestionDao questionDao;
 
+    @InjectMocks
+    private TestServiceImpl testService;
+
     @Test
     @DisplayName("корректно выводит данные вопросов")
     void shouldHaveCorrectOutput() {
 
-        final TestService testService = new TestServiceImpl(this.ioService, this.questionDao);
         final StringBuilder stringBuilder = new StringBuilder();
 
 
@@ -75,7 +79,9 @@ public class TestServiceImplTest {
             .when(questionDao)
             .findAll();
 
-        testService.executeTest();
+        final Student student = new Student("Firstname", "Lastdname");
+
+        this.testService.executeTestFor(student);
 
         Assertions.assertEquals(
             """
