@@ -12,7 +12,7 @@ public class Application {
     public static void main(String[] args) {
 
         //Создать контекст на основе Annotation/Java конфигурирования
-        ApplicationContext context = new AnnotationConfigApplicationContext();
+        ApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
         var testRunnerService = context.getBean(TestRunnerService.class);
         testRunnerService.run();
 
