@@ -52,7 +52,7 @@ public class CsvQuestionDao implements QuestionDao {
                 .build()
                 .stream()
                 .map(QuestionDto::toDomainObject)
-                .collect(Collectors.toList());
+                .toList();
         }
     }
 }
