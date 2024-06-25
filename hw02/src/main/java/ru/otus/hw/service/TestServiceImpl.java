@@ -23,7 +23,8 @@ public class TestServiceImpl implements TestService {
     public TestResult executeTestFor(Student student) {
 
         ioService.printEmptyLine();
-        ioService.printFormattedLine("Please answer the questions below%n");
+        ioService.printLine("Please answer the questions below");
+        ioService.printEmptyLine();
 
         final List<Question> questions = questionDao.findAll();
         var testResult = new TestResult(student);
