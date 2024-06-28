@@ -12,7 +12,6 @@ import ru.otus.hw.config.TestFileNameProvider;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -36,20 +35,18 @@ public class CsvQuestionDaoTest {
 
         final List<Question> questions = questionDao.findAll();
 
-        questions.sort(Comparator.comparing(Question::text));
         Assertions.assertEquals(3, questions.size());
 
-        IntStream.range(0, questions.size()).forEach(idx -> {
+        for (int i = 0, bound = questions.size(); i < bound; i++) {
 
-            final Question question = questions.get(idx);
-            Assertions.assertEquals(String.format("Test%s", idx), question.text());
+            final Question question = questions.get(i);
+            Assertions.assertEquals(String.format("Test%s", i), question.text());
             Assertions.assertEquals(2, question.answers().size());
-        });
+        }
 
         final List<Answer> answers = questions.stream()
             .map(Question::answers)
             .flatMap(List::stream)
-            .sorted(Comparator.comparing(Answer::text))
             .toList();
 
         IntStream.range(0, answers.size()).forEach(idx -> {
