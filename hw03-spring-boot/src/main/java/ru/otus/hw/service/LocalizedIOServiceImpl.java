@@ -12,6 +12,11 @@ public class LocalizedIOServiceImpl implements LocalizedIOService {
     private final IOService ioService;
 
     @Override
+    public void printEmptyLine() {
+        ioService.printEmptyLine();
+    }
+
+    @Override
     public void printLine(String s) {
         ioService.printLine(s);
     }
