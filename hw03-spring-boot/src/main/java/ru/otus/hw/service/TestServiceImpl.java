@@ -40,17 +40,17 @@ public class TestServiceImpl implements TestService {
     private boolean askQuestion(int questionNumber, Question question) {
 
         ioService.printEmptyLine();
-        ioService.printFormattedLine("Question %d:", questionNumber);
+        ioService.printFormattedLineLocalized("TestService.question", questionNumber);
         ioService.printLine(question.text());
         ioService.printEmptyLine();
         printAnswers(question.answers());
 
         final int answerCount = question.answers().size();
-        var answer = ioService.readIntForRangeWithPrompt(
+        var answer = ioService.readIntForRangeWithPromptLocalized(
             1,
             answerCount,
-            "Choose right answer number.",
-            String.format("Please enter a number from 1 to %s", answerCount)
+            "TestService.answer.choose",
+            "TestService.answer.choose.error"
         );
 
         return question.answers().get(answer - 1).isCorrect();
