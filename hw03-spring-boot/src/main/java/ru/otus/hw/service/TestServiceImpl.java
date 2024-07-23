@@ -9,7 +9,6 @@ import ru.otus.hw.domain.Student;
 import ru.otus.hw.domain.TestResult;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +57,10 @@ public class TestServiceImpl implements TestService {
 
     private void printAnswers(List<Answer> answers) {
 
-        IntStream.range(0, answers.size()).forEachOrdered(index -> printAnswer(index + 1, answers.get(index)));
+        for (int answerIdx = 0, answersSize = answers.size(); answerIdx < answersSize; answerIdx++) {
+
+            printAnswer(answerIdx + 1, answers.get(answerIdx));
+        }
     }
 
     private void printAnswer(int answerNumber, Answer answer) {

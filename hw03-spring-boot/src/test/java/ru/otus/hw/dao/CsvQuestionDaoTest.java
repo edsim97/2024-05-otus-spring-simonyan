@@ -13,7 +13,6 @@ import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 @DisplayName("Класс CsvQuestionDao")
 @ExtendWith(MockitoExtension.class)
@@ -49,10 +48,10 @@ public class CsvQuestionDaoTest {
             .flatMap(List::stream)
             .toList();
 
-        IntStream.range(0, answers.size()).forEach(idx -> {
+        for (int answerIdx = 0, answersSize = answers.size(); answerIdx < answersSize; answerIdx++) {
 
-            final Answer answer = answers.get(idx);
-            Assertions.assertEquals(String.format("test%s", idx), answer.text());
-        });
+            final Answer answer = answers.get(answerIdx);
+            Assertions.assertEquals(String.format("test%s", answerIdx), answer.text());
+        }
     }
 }
