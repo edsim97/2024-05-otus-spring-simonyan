@@ -1,4 +1,4 @@
-package ru.ous.hw.service;
+package ru.otus.hw.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +12,7 @@ import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
 import ru.otus.hw.domain.Student;
-import ru.otus.hw.service.LocalizedIOService;
+import ru.otus.hw.service.IOService;
 import ru.otus.hw.service.TestServiceImpl;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.List;
 public class TestServiceImplTest {
 
     @Mock
-    private LocalizedIOService ioService;
+    private IOService ioService;
 
     @Mock
     private QuestionDao questionDao;
@@ -46,10 +46,6 @@ public class TestServiceImplTest {
             .when(ioService)
             .printLine(Mockito.any());
 
-        Mockito.doAnswer(invocation -> lines.add(invocation.getArgument(0, String.class)))
-            .when(ioService)
-            .printLineLocalized(Mockito.any());
-
         Mockito.doAnswer(invocation ->
             lines.add(
                 String.format(
@@ -61,25 +57,9 @@ public class TestServiceImplTest {
             .when(ioService)
             .printFormattedLine(Mockito.any(), Mockito.any(Object[].class));
 
-        Mockito.doAnswer(invocation ->
-            lines.add(
-                String.format(
-                    invocation.getArgument(0, String.class),
-                    Arrays.copyOfRange(invocation.getArguments(), 1, invocation.getArguments().length)
-                )
-            )
-        )
-            .when(ioService)
-            .printFormattedLineLocalized(Mockito.any(), Mockito.any(Object[].class));
-
         Mockito.doReturn(1)
             .when(ioService)
-            .readIntForRangeWithPromptLocalized(
-                    Mockito.anyInt(),
-                    Mockito.anyInt(),
-                    Mockito.anyString(),
-                    Mockito.anyString()
-            );
+            .readIntForRangeWithPrompt(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString());
 
         final Question question = Question.builder()
             .text("test")
@@ -104,7 +84,7 @@ public class TestServiceImplTest {
         this.testService.executeTestFor(student);
 
         Assertions.assertEquals(
-            "TestService.answer.the.questions TestService.question test 1. test1 2. test2",
+            "Please answer the questions below Question 1: test 1. test1 2. test2",
             String.join(" ", lines)
         );
     }
