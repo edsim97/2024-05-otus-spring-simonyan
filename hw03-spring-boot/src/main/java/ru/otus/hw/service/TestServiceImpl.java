@@ -21,9 +21,9 @@ public class TestServiceImpl implements TestService {
 
     @Override
     public TestResult executeTestFor(Student student) {
-        ioService.printLine("");
+        ioService.printEmptyLine();
         ioService.printLineLocalized("TestService.answer.the.questions");
-        ioService.printLine("");
+        ioService.printEmptyLine();
 
         var questions = questionDao.findAll();
         var testResult = new TestResult(student);
