@@ -35,10 +35,4 @@ public class TestCommands {
 
         this.testRunnerService.run();
     }
-
-    @Command(description = "Exit", command = "exit", alias = "q")
-    public void exit() {
-
-
-    }
 }
