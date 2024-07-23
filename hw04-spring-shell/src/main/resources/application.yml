@@ -1,3 +1,7 @@
+logging:
+  level:
+    root: ERROR
+
 spring:
   messages:
     baseName: messages
@@ -8,6 +12,10 @@ spring:
   output:
     ansi:
       enabled: always
+  shell:
+    interactive:
+      enabled: true
+
 test:
   rightAnswersCountToPass: 3
   locale: ru-RU
