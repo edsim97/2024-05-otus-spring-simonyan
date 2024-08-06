@@ -8,5 +8,6 @@
 
 ## Ссылки на домашние задания
 
-- [ДЗ 1](hw01)
-- [ДЗ 2](hw02)
+- [ДЗ 1](hw01-xml-config)
+- [ДЗ 2](hw02-annotation-config)
+- [ДЗ 3](hw03-spring-boot)
