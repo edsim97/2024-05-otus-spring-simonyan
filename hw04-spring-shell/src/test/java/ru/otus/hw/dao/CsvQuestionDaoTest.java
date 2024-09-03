@@ -1,29 +1,35 @@
 package ru.otus.hw.dao;
 
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.otus.hw.config.TestFileNameProvider;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.BDDMockito.given;
 
+@AllArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("Класс CsvQuestionDao")
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CsvQuestionDaoTest {
 
-    @Autowired
+    private final static String QUESTIONS_FILE_NAME = "questions.csv";
+
+    private TestFileNameProvider fileNameProvider;
+
     private CsvQuestionDao questionDao;
 
     @Test
     @DisplayName("корректно читает вопросы")
     void shouldReadQuestions() {
+
+        given(fileNameProvider.getTestFileName()).willReturn(QUESTIONS_FILE_NAME);
 
         final List<Question> questions = questionDao.findAll();
 
