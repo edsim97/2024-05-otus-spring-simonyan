@@ -11,8 +11,8 @@ import ru.otus.hw.domain.Question;
 
 import java.util.List;
 
+import static org.mockito.Mockito.doReturn;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
 
 @AllArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("Класс CsvQuestionDao")
@@ -29,7 +29,7 @@ public class CsvQuestionDaoTest {
     @DisplayName("корректно читает вопросы")
     void shouldReadQuestions() {
 
-        given(fileNameProvider.getTestFileName()).willReturn(QUESTIONS_FILE_NAME);
+        doReturn(QUESTIONS_FILE_NAME).when(fileNameProvider).getTestFileName();
 
         final List<Question> questions = questionDao.findAll();
 

@@ -5,3 +5,9 @@ spring:
   output:
     ansi:
       enabled: always
+
+test:
+  rightAnswersCountToPass: 3
+  locale: en-US
+  fileNameByLocaleTag:
+    en-US: questions.csv

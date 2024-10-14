@@ -16,8 +16,8 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 
 @AllArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("Класс TestServiceImpl")
@@ -57,21 +57,22 @@ public class TestServiceImplTest {
 
     private void setupTestService() {
 
-        willReturn(createQuestions()).given(questionDao).findAll();
+        doReturn(createQuestions()).when(questionDao).findAll();
 
-        willDoNothing().given(ioService).printEmptyLine();
-        willDoNothing().given(ioService).printLine(anyString());
-        willDoNothing().given(ioService).printLineLocalized(anyString());
-        willDoNothing().given(ioService).printFormattedLine(anyString());
-        willDoNothing().given(ioService).printFormattedLineLocalized(anyString());
+        doNothing().when(ioService).printEmptyLine();
+        doNothing().when(ioService).printEmptyLine();
+        doNothing().when(ioService).printLine(anyString());
+        doNothing().when(ioService).printLineLocalized(anyString());
+        doNothing().when(ioService).printFormattedLine(anyString());
+        doNothing().when(ioService).printFormattedLineLocalized(anyString());
 
-        willReturn(1).given(ioService).readIntForRange(anyInt(), anyInt(), anyString());
-        willReturn(1).given(ioService).readIntForRangeLocalized(anyInt(), anyInt(), anyString());
-        willReturn(1)
-            .given(ioService)
+        doReturn(1).when(ioService).readIntForRange(anyInt(), anyInt(), anyString());
+        doReturn(1).when(ioService).readIntForRangeLocalized(anyInt(), anyInt(), anyString());
+        doReturn(1)
+            .when(ioService)
             .readIntForRangeWithPrompt(anyInt(), anyInt(), anyString(), anyString());
-        willReturn(1)
-            .given(ioService)
+        doReturn(1)
+            .when(ioService)
             .readIntForRangeWithPromptLocalized(anyInt(), anyInt(), anyString(), anyString());
     }
 
