@@ -22,13 +22,13 @@ public class JpaGenreRepository implements GenreRepository {
     @Override
     public List<Genre> findAll() {
 
-        return em.createQuery("select g from genres g", Genre.class).getResultList();
+        return em.createQuery("select g from Genre g", Genre.class).getResultList();
     }
 
     @Override
     public List<Genre> findAllByIds(Set<Long> ids) {
 
-        return em.createQuery("select g from genres g where g.id in (:ids)", Genre.class)
+        return em.createQuery("select g from Genre g where g.id in (:ids)", Genre.class)
             .setParameter("ids", ids)
             .getResultList();
     }
