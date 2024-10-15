@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.repositories.AuthorRepository;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
+@Primary
 public class JpaAuthorRepository implements AuthorRepository {
 
     @PersistenceContext
