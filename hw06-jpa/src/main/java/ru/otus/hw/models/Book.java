@@ -14,7 +14,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -34,6 +36,8 @@ public class Book {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Author author;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -42,5 +46,7 @@ public class Book {
         joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "genre_id", referencedColumnName = "id")
     )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Genre> genres;
 }
