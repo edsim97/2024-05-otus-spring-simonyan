@@ -59,12 +59,28 @@ public class JdbcBookRepository implements BookRepository {
     }
 
     @Override
+    public Optional<Book> findByIdFetchAll(long id) {
+
+        throw new UnsupportedOperationException(
+            "Method findByIdFetchAll is unsupported for JDBC repository. Use JPA repository instead."
+        );
+    }
+
+    @Override
     public List<Book> findAll() {
         var genres = genreRepository.findAll();
         var relations = getAllGenreRelations();
         var books = getAllBooksWithoutGenres();
         mergeBooksInfo(books, genres, relations);
         return books;
+    }
+
+    @Override
+    public List<Book> findAllFetchAll() {
+
+        throw new UnsupportedOperationException(
+            "Method findAllFetchAll is unsupported for JDBC repository. Use JPA repository instead."
+        );
     }
 
     @Override

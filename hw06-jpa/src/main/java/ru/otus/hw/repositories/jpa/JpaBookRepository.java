@@ -1,7 +1,9 @@
 package ru.otus.hw.repositories.jpa;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -26,9 +28,34 @@ public class JpaBookRepository implements BookRepository {
     }
 
     @Override
+    public Optional<Book> findByIdFetchAll(long id) {
+
+        final TypedQuery<Book> query = em.createQuery(
+            "select b from Book b join fetch b.author join fetch b.genres where b.id = :id",
+            Book.class
+        );
+        query.setParameter("id", id);
+
+        try {
+
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException e) {
+
+            return Optional.empty();
+        }
+    }
+
+    @Override
     public List<Book> findAll() {
 
         return em.createQuery("select b from Book b", Book.class).getResultList();
+    }
+
+    @Override
+    public List<Book> findAllFetchAll() {
+
+        return em.createQuery("select b from Book b join fetch b.author join fetch b.genres", Book.class)
+            .getResultList();
     }
 
     @Override
