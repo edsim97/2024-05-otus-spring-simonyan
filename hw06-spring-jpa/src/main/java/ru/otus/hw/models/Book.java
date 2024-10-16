@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "books")
+@Builder(toBuilder = true)
 public class Book {
 
     @Id
@@ -58,7 +60,6 @@ public class Book {
         fetch = FetchType.LAZY,
         orphanRemoval = true
     )
-    @JoinColumn(name = "student_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<BookComment> comments;
