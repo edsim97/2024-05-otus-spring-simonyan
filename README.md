@@ -11,4 +11,4 @@
 - [ДЗ 1](hw01-xml-config)
 - [ДЗ 2](hw02-annotation-config)
 - [ДЗ 3](hw03-spring-boot)
-- [ДЗ 6](hw06-jpa)
+- [ДЗ 6](hw06-spring-jpa)
