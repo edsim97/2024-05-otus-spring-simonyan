@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,4 +50,16 @@ public class Book {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Genre> genres;
+
+    @OneToMany(
+        targetEntity = BookComment.class,
+        mappedBy = "book",
+        cascade = CascadeType.ALL,
+        fetch = FetchType.LAZY,
+        orphanRemoval = true
+    )
+    @JoinColumn(name = "student_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<BookComment> comments;
 }

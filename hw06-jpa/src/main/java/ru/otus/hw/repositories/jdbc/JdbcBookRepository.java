@@ -223,6 +223,7 @@ public class JdbcBookRepository implements BookRepository {
                 rs.getLong("book__id"),
                 rs.getString("book__title"),
                 new Author(rs.getLong("author__id"), rs.getString("author__full_name")),
+                Collections.emptyList(),
                 Collections.emptyList()
             );
         }
@@ -246,7 +247,8 @@ public class JdbcBookRepository implements BookRepository {
                         rs.getLong("book__id"),
                         rs.getString("book__title"),
                         new Author(rs.getLong("author__id"), rs.getString("author__full_name")),
-                        genres
+                        genres,
+                        Collections.emptyList()
                     );
                 }
 

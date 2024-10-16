@@ -9,6 +9,6 @@ import ru.otus.hw.models.BookComment;
 public class BookCommentConverter {
 
     public String bookCommentToString(BookComment comment) {
-        return "Id: %d, BookId: %d, Text: %s".formatted(comment.getId(), comment.getBook().getId(), comment.getText());
+        return "Id: %d, Text: %s".formatted(comment.getId(), comment.getText());
     }
 }
