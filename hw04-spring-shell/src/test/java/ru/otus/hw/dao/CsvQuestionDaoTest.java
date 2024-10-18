@@ -1,28 +1,29 @@
 package ru.otus.hw.dao;
 
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw.config.TestFileNameProvider;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
 
 import java.util.List;
 
-import static org.mockito.Mockito.doReturn;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doReturn;
 
-@AllArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("Класс CsvQuestionDao")
 @SpringBootTest
 public class CsvQuestionDaoTest {
 
     private final static String QUESTIONS_FILE_NAME = "questions.csv";
 
+    @MockBean
     private TestFileNameProvider fileNameProvider;
 
+    @Autowired
     private CsvQuestionDao questionDao;
 
     @Test

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
@@ -24,10 +25,13 @@ import static org.mockito.Mockito.doReturn;
 @SpringBootTest
 public class TestServiceImplTest {
 
+    @MockBean
     private LocalizedIOService ioService;
 
+    @MockBean
     private QuestionDao questionDao;
 
+    @Autowired
     private TestServiceImpl testService;
 
     @Test
