@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import ru.otus.hw.config.TestFileNameProvider;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
@@ -20,7 +21,7 @@ public class CsvQuestionDaoTest {
 
     private final static String QUESTIONS_FILE_NAME = "questions.csv";
 
-    @MockBean
+    @SpyBean
     private TestFileNameProvider fileNameProvider;
 
     @Autowired

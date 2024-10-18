@@ -1,6 +1,5 @@
 package ru.otus.hw.service;
 
-import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
-@AllArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("Класс TestServiceImpl")
 @SpringBootTest
 public class TestServiceImplTest {
