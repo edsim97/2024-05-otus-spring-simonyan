@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.hw.models.Book;
@@ -25,8 +26,6 @@ public class BookServiceTest {
     private final BookRepository bookRepository;
 
     private final BookServiceImpl bookService;
-
-    @BeforeEach
 
     @DisplayName("находить книгу по ID")
     @Test

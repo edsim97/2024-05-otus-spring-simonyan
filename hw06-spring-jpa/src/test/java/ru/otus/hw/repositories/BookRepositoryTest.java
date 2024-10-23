@@ -1,12 +1,12 @@
 package ru.otus.hw.repositories;
 
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.ListAssert;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.repositories.jpa.JpaBookRepository;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(JpaBookRepository.class)
 public class BookRepositoryTest {
 
-    private final EntityManager em;
+    private final TestEntityManager em;
 
     private final JpaBookRepository bookRepository;
 
@@ -54,7 +54,7 @@ public class BookRepositoryTest {
     @Test
     void shouldInsertBook() {
 
-        final Book expectedBook = bookRepository.save(new Book(0, "BookTitle_4", null, null, null));
+        final Book expectedBook = bookRepository.save(new Book(0, "BookTitle_4", null, null));
         final Book book = em.find(Book.class, 4);
 
         assertThat(book)

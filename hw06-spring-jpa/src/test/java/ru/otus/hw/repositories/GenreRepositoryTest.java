@@ -31,9 +31,9 @@ public class GenreRepositoryTest {
             new Genre(1L, "Genre_1"),
             new Genre(2L, "Genre_2"),
             new Genre(3L, "Genre_3"),
-            new Genre(3L, "Genre_4"),
-            new Genre(3L, "Genre_5"),
-            new Genre(3L, "Genre_6")
+            new Genre(4L, "Genre_4"),
+            new Genre(5L, "Genre_5"),
+            new Genre(6L, "Genre_6")
         );
         assertThat(genres).hasSize(6).containsAll(expectedGenres);
     }

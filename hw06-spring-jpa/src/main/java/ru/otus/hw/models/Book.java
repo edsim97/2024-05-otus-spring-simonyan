@@ -43,7 +43,7 @@ public class Book {
     @EqualsAndHashCode.Exclude
     private Author author;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
         name = "books_genres",
         joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
@@ -52,15 +52,4 @@ public class Book {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Genre> genres;
-
-    @OneToMany(
-        targetEntity = BookComment.class,
-        mappedBy = "book",
-        cascade = CascadeType.ALL,
-        fetch = FetchType.LAZY,
-        orphanRemoval = true
-    )
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<BookComment> comments;
 }
