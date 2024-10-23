@@ -66,8 +66,9 @@ public class BookRepositoryTest {
     @Test
     void shouldUpdateBook() {
 
-        final Book expectedBook = em.find(Book.class, 3);
+        Book expectedBook = em.find(Book.class, 3);
         final Book book = bookRepository.save(expectedBook.toBuilder().title("BookTitle_Test").build());
+        expectedBook = em.refresh(expectedBook);
 
         assertThat(book)
             .isNotNull()
