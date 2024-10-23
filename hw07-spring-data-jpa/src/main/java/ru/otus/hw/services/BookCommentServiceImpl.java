@@ -26,6 +26,6 @@ public class BookCommentServiceImpl implements BookCommentService {
     @Override
     public List<BookComment> findAllForBook(long bookId) {
 
-        return this.bookCommentRepository.findAllForBook(bookId);
+        return this.bookCommentRepository.findByBookId(bookId);
     }
 }
