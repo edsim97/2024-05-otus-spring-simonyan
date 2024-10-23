@@ -1,21 +1,19 @@
-package ru.ous.hw.service;
+package ru.otus.hw.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
-import ru.otus.hw.domain.Student;
-import ru.otus.hw.service.LocalizedIOService;
+import ru.otus.hw.service.IOService;
+import ru.otus.hw.service.TestService;
 import ru.otus.hw.service.TestServiceImpl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,62 +22,40 @@ import java.util.List;
 public class TestServiceImplTest {
 
     @Mock
-    private LocalizedIOService ioService;
+    private IOService ioService;
 
     @Mock
     private QuestionDao questionDao;
-
-    @InjectMocks
-    private TestServiceImpl testService;
 
     @Test
     @DisplayName("корректно выводит данные вопросов")
     void shouldHaveCorrectOutput() {
 
-        final List<String> lines = new ArrayList<>();
+        final TestService testService = new TestServiceImpl(this.ioService, this.questionDao);
+        final StringBuilder stringBuilder = new StringBuilder();
 
-        Mockito.doNothing()
+
+        Mockito.doAnswer(i -> stringBuilder.append(System.lineSeparator()))
             .when(ioService)
             .printEmptyLine();
 
-        Mockito.doAnswer(invocation -> lines.add(invocation.getArgument(0, String.class)))
+        Mockito.doAnswer(
+            invocation -> stringBuilder.append(invocation.getArgument(0, String.class)).append(System.lineSeparator())
+        )
             .when(ioService)
             .printLine(Mockito.any());
 
-        Mockito.doAnswer(invocation -> lines.add(invocation.getArgument(0, String.class)))
-            .when(ioService)
-            .printLineLocalized(Mockito.any());
-
         Mockito.doAnswer(invocation ->
-            lines.add(
+            stringBuilder.append(
                 String.format(
                     invocation.getArgument(0, String.class),
                     Arrays.copyOfRange(invocation.getArguments(), 1, invocation.getArguments().length)
                 )
             )
+            .append("\n")
         )
             .when(ioService)
             .printFormattedLine(Mockito.any(), Mockito.any(Object[].class));
-
-        Mockito.doAnswer(invocation ->
-            lines.add(
-                String.format(
-                    invocation.getArgument(0, String.class),
-                    Arrays.copyOfRange(invocation.getArguments(), 1, invocation.getArguments().length)
-                )
-            )
-        )
-            .when(ioService)
-            .printFormattedLineLocalized(Mockito.any(), Mockito.any(Object[].class));
-
-        Mockito.doReturn(1)
-            .when(ioService)
-            .readIntForRangeWithPromptLocalized(
-                    Mockito.anyInt(),
-                    Mockito.anyInt(),
-                    Mockito.anyString(),
-                    Mockito.anyString()
-            );
 
         final Question question = Question.builder()
             .text("test")
@@ -99,13 +75,21 @@ public class TestServiceImplTest {
             .when(questionDao)
             .findAll();
 
-        final Student student = new Student("Firstname", "Lastname");
-
-        this.testService.executeTestFor(student);
+        testService.executeTest();
 
         Assertions.assertEquals(
-            "TestService.answer.the.questions TestService.question test 1. test1 2. test2",
-            String.join(" ", lines)
+            """
+            
+            Please answer the questions below
+            
+            
+            Question 1:
+            test
+            
+            1. test1
+            2. test2
+            """,
+            stringBuilder.toString()
         );
     }
 }
