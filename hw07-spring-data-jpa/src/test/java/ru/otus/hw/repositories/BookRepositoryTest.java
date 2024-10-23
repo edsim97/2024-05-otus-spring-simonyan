@@ -7,9 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.otus.hw.models.Book;
-import ru.otus.hw.repositories.jpa.JpaBookRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,12 +17,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("Репозиторий для Book должен")
 @DataJpaTest
-@Import(JpaBookRepository.class)
 public class BookRepositoryTest {
 
     private final TestEntityManager em;
 
-    private final JpaBookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     @DisplayName("возвращать список всех книг")
     @Test

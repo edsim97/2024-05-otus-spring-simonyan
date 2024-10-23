@@ -39,7 +39,7 @@ public class GenreRepositoryTest {
     @Test
     void shouldFindGenreById() {
 
-        final List<Genre> genres = this.genreRepository.findAllByIds(Set.of(1L, 2L, 3L));
+        final List<Genre> genres = this.genreRepository.findByIdIn(Set.of(1L, 2L, 3L));
         final List<Genre> expectedGenres = List.of(
             new Genre(1L, "Genre_1"),
             new Genre(2L, "Genre_2"),

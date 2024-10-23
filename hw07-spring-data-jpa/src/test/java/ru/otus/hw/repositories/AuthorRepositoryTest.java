@@ -5,9 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import ru.otus.hw.models.Author;
-import ru.otus.hw.repositories.jpa.JpaAuthorRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,10 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("Репозиторий для Author должен")
 @DataJpaTest
-@Import(JpaAuthorRepository.class)
 public class AuthorRepositoryTest {
 
-    private final JpaAuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
     @DisplayName("возвращать список всех авторов")
     @Test

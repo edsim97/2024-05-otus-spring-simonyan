@@ -66,8 +66,8 @@ public class BookServiceTest {
     @Test
     void shouldUpdateBook() {
 
+        final Book book = bookService.update(3, "BookTitle_Test", 1, Set.of(1L, 2L));
         final Book expectedBook = bookRepository.findById(3).orElse(null);
-        final Book book = bookService.update(3, "BookTitle_Test", 1, Set.of(0L, 1L));
 
         assertThat(book)
             .isNotNull()

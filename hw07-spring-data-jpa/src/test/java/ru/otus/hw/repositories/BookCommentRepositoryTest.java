@@ -5,10 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.BookComment;
-import ru.otus.hw.repositories.jpa.JpaBookCommentRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,16 +16,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("Репозиторий для BookComment должен")
 @DataJpaTest
-@Import(JpaBookCommentRepository.class)
 public class BookCommentRepositoryTest {
 
-    private final JpaBookCommentRepository bookCommentRepository;
+    private final BookCommentRepository bookCommentRepository;
 
     @DisplayName("возвращать список всех комментариев для указанной книги")
     @Test
     void shouldFindAllComments() {
 
-        final List<BookComment> comments = this.bookCommentRepository.findAllForBook(1);
+        final List<BookComment> comments = this.bookCommentRepository.findByBookId(1);
         final Book expectedBook = Book.builder()
             .id(1L)
             .title("BookTitle_1")
