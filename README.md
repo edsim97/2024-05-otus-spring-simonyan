@@ -12,3 +12,4 @@
 - [ДЗ 2](hw02-annotation-config)
 - [ДЗ 3](hw03-spring-boot)
 - [ДЗ 4](hw04-spring-shell)
+- [ДЗ 5](hw05-jdbc-hard)
