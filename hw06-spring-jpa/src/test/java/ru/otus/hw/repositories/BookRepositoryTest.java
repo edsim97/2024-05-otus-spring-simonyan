@@ -73,4 +73,13 @@ public class BookRepositoryTest {
             .isNotNull()
             .isEqualTo(expectedBook);
     }
+
+    @DisplayName("удалять книгу из БД")
+    @Test
+    void shouldDeleteBook() {
+
+        bookRepository.deleteById(3);
+
+        assertThat(em.find(Book.class, 3)).isNull();
+    }
 }

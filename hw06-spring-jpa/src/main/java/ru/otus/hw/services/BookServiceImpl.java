@@ -38,11 +38,13 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findAllFetchAll();
     }
 
+    @Transactional
     @Override
     public Book insert(String title, long authorId, Set<Long> genresIds) {
         return save(0, title, authorId, genresIds);
     }
 
+    @Transactional
     @Override
     public Book update(long id, String title, long authorId, Set<Long> genresIds) {
         return save(id, title, authorId, genresIds);
@@ -54,7 +56,6 @@ public class BookServiceImpl implements BookService {
         bookRepository.deleteById(id);
     }
 
-    @Transactional
     private Book save(long id, String title, long authorId, Set<Long> genresIds) {
         if (isEmpty(genresIds)) {
             throw new IllegalArgumentException("Genres ids must not be null");
