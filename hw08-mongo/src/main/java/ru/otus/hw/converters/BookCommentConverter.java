@@ -10,6 +10,6 @@ public class BookCommentConverter {
 
     public String bookCommentToString(BookComment comment) {
 
-        return "Text: %s".formatted(comment.getText());
+        return "{ Text: %s }".formatted(comment.getText());
     }
 }

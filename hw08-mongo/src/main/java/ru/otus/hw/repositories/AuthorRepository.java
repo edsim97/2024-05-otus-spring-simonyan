@@ -1,13 +1,6 @@
 package ru.otus.hw.repositories;
 
-import jakarta.annotation.Nonnull;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.ListCrudRepository;
 import ru.otus.hw.models.Author;
 
-import java.util.List;
-
-public interface AuthorRepository extends CrudRepository<Author, String> {
-
-    @Nonnull
-    List<Author> findAll();
-}
+public interface AuthorRepository extends ListCrudRepository<Author, String> { }
