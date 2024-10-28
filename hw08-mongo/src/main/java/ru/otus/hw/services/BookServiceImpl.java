@@ -2,6 +2,7 @@ package ru.otus.hw.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.hw.converters.BookConverter;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.repositories.AuthorRepository;
@@ -10,12 +11,15 @@ import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class BookServiceImpl implements BookService {
+
+    private final BookConverter bookConverter;
+
     private final AuthorRepository authorRepository;
 
     private final GenreRepository genreRepository;
@@ -23,13 +27,21 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
     @Override
-    public Optional<Book> findById(String id) {
-        return bookRepository.findById(id);
+    public String findById(String id) {
+        return bookRepository.findById(id).map(bookConverter::bookToString).orElse("null");
     }
 
     @Override
     public List<Book> findAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public String findAllString() {
+        return bookRepository.findAll()
+            .stream()
+            .map(book -> "%s".formatted(bookConverter.bookToString(book)))
+            .collect(Collectors.joining(",\n\t", "[\n\t", "\n]"));
     }
 
     @Override
@@ -59,7 +71,7 @@ public class BookServiceImpl implements BookService {
             throw new EntityNotFoundException("One or all genres with ids %s not found".formatted(genresIds));
         }
 
-        var book = new Book(id, title, author, genres, Collections.emptyList());
+        var book = new Book(id, title, author, genres);
         return bookRepository.save(book);
     }
 }

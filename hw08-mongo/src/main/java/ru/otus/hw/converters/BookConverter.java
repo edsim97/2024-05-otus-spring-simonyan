@@ -17,22 +17,20 @@ public class BookConverter {
 
     public String bookToString(Book book) {
 
+        if (book == null) {
+
+            return "null";
+        }
+
         var genresString = book.getGenres().stream()
             .map(genreConverter::genreToString)
-            .map("{%s}"::formatted)
-            .collect(Collectors.joining(", "));
-
-        var commentsString = book.getComments().stream()
-            .map(bookCommentConverter::bookCommentToString)
-            .map("{%s}"::formatted)
             .collect(Collectors.joining(", ", "[", "]"));
 
-        return "Id: %s, title: %s, author: {%s}, genres: [%s], comments: %s".formatted(
+        return "{ Id: %s, title: %s, author: %s, genres: %s }".formatted(
             book.getId(),
             book.getTitle(),
             authorConverter.authorToString(book.getAuthor()),
-            genresString,
-            commentsString
+            genresString
         );
     }
 }

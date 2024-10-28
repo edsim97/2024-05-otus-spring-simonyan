@@ -5,5 +5,8 @@ import ru.otus.hw.models.Author;
 import java.util.List;
 
 public interface AuthorService {
+
     List<Author> findAll();
+
+    String findAllString();
 }

@@ -1,6 +1,7 @@
 package ru.otus.hw.models;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Document(collection = "books")
 public class Book {
 
@@ -27,6 +29,4 @@ public class Book {
 
     @DocumentReference(collection = "genres")
     private List<Genre> genres;
-
-    private List<BookComment> comments;
 }
