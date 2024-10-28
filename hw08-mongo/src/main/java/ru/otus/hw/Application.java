@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @SpringBootApplication
 public class Application {
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
 
 		BookService bookService = context.getBean(BookService.class);
