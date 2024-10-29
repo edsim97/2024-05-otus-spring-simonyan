@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>ru.otus.hw</groupId>
-    <artifactId>hw08-spring-mvc</artifactId>
+    <artifactId>hw09-spring-mvc</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
