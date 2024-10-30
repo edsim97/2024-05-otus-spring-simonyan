@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.otus.hw.exceptions.NotFoundException;
 import ru.otus.hw.models.Book;
+import ru.otus.hw.services.AuthorService;
 import ru.otus.hw.services.BookService;
+import ru.otus.hw.services.GenreService;
 
 import java.util.List;
 
@@ -19,6 +21,10 @@ import java.util.List;
 public class BookController {
 
     private final BookService bookService;
+
+    private final AuthorService authorService;
+
+    private final GenreService genreService;
 
     @GetMapping("book")
     public String getBooks(Model model) {
@@ -31,6 +37,9 @@ public class BookController {
     @GetMapping("book/create")
     public String createBookPage(Model model) {
 
+        model.addAttribute("authors", authorService.findAll());
+        model.addAttribute("genres", genreService.findAll());
+
         return "create";
     }
 
@@ -38,7 +47,7 @@ public class BookController {
     public String createBook(Book book, Model model) {
 
         bookService.insert(book);
-        
+
         return "redirect:/";
     }
 
@@ -47,6 +56,8 @@ public class BookController {
 
         Book book = bookService.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("book", book);
+        model.addAttribute("authors", authorService.findAll());
+        model.addAttribute("genres", genreService.findAll());
 
         return "update";
     }
