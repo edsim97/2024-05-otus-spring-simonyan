@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
+import ru.otus.hw.models.Genre;
 import ru.otus.hw.repositories.BookRepository;
 
 import java.util.List;
@@ -53,7 +55,13 @@ public class BookServiceTest {
     @Test
     void shouldInsertBook() {
 
-        final Book expectedBook = bookService.insert("BookTitle_4", 1, Set.of(1L, 2L));
+        Book newBook = new Book(
+            0,
+            "BookTitle_4",
+            new Author(1, null),
+            List.of(new Genre(1, null), new Genre(2, null))
+        );
+        final Book expectedBook = bookService.insert(newBook);
         final Book book = bookRepository.findById(4).orElse(null);
 
         assertThat(book)
@@ -66,7 +74,13 @@ public class BookServiceTest {
     @Test
     void shouldUpdateBook() {
 
-        final Book book = bookService.update(3, "BookTitle_Test", 1, Set.of(1L, 2L));
+        Book updateBook = new Book(
+            3,
+            "BookTitle_Test",
+            new Author(1, null),
+            List.of(new Genre(1, null), new Genre(2, null))
+        );
+        final Book book = bookService.update(updateBook);
         final Book expectedBook = bookRepository.findById(3).orElse(null);
 
         assertThat(book)
