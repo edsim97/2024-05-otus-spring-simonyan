@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of all books</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+            integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls"
+            crossorigin="anonymous"
+    >
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            padding-top: 32px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .cell {
+            vertical-align: top;
+        }
+
+        .genre-cell {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Books:</h2>
+
+    <table class="pure-table pure-table-horizontal">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Genres</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book: ${books}" th:object="${book}">
+            <td class="cell" th:text="*{id}"></td>
+            <td class="cell" th:text="*{title}"></td>
+            <td class="cell" th:text="*{author != null} ? *{author.fullName} : '-'"></td>
+            <td class="cell">
+                <span class="genre-cell" th:each="genre: *{genres}" th:text="${genre.name}"></span>
+            </td>
+            <td class="cell">
+                <form th:action="@{/book/__*{id}__}" th:method="delete">
+                    <a class="pure-button pure-button-primary" href="edit.html" th:href="@{/book/edit(id=${book.id})}">
+                        Update
+                    </a>
+                    <input type="hidden" name="_method" value="delete" />
+                    <button class="pure-button pure-button-primary" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <a class="pure-button pure-button-primary" href="edit.html" th:href="@{/book/create}">+ Create new</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

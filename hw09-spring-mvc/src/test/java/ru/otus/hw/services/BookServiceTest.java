@@ -2,11 +2,9 @@ package ru.otus.hw.services;
 
 import lombok.RequiredArgsConstructor;
 import org.assertj.core.api.ListAssert;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.otus.hw.models.Author;
@@ -16,7 +14,6 @@ import ru.otus.hw.repositories.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -53,7 +50,7 @@ public class BookServiceTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @DisplayName("сохранять новую книгу в БД")
     @Test
-    void shouldInsertBook() {
+    void shouldSaveBook() {
 
         Book newBook = new Book(
             0,
@@ -61,7 +58,7 @@ public class BookServiceTest {
             new Author(1, null),
             List.of(new Genre(1, null), new Genre(2, null))
         );
-        final Book expectedBook = bookService.insert(newBook);
+        final Book expectedBook = bookService.save(newBook);
         final Book book = bookRepository.findById(4).orElse(null);
 
         assertThat(book)
@@ -80,7 +77,7 @@ public class BookServiceTest {
             new Author(1, null),
             List.of(new Genre(1, null), new Genre(2, null))
         );
-        final Book book = bookService.update(updateBook);
+        final Book book = bookService.save(updateBook);
         final Book expectedBook = bookRepository.findById(3).orElse(null);
 
         assertThat(book)

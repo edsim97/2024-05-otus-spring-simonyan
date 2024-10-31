@@ -29,14 +29,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    public Book insert(Book book) {
-
-        return this.bookRepository.save(book);
-    }
-
-    @Transactional
-    @Override
-    public Book update(Book book) {
+    public Book save(Book book) {
 
         return this.bookRepository.save(book);
     }
