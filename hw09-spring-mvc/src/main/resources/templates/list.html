@@ -13,10 +13,21 @@
         body {
             padding: 0;
             margin: 0;
-            padding-top: 32px;
             display: flex;
             align-items: center;
             flex-direction: column;
+            padding-top: 32px;
+            background-color: #e5e5e5;
+        }
+
+        .page {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0px 8px 8px -2px rgba(34, 60, 80, 0.2);
         }
 
         .cell {
@@ -30,6 +41,7 @@
 </head>
 <body>
 
+<div class="page">
     <h2>Books:</h2>
 
     <table class="pure-table pure-table-horizontal">
@@ -66,6 +78,7 @@
         </tr>
         </tbody>
     </table>
+</div>
 
 </body>
 </html>

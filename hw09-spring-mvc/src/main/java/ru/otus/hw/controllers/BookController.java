@@ -18,6 +18,7 @@ import ru.otus.hw.services.BookService;
 import ru.otus.hw.services.GenreService;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -62,10 +63,10 @@ public class BookController {
     public String saveBook(
         @ModelAttribute Book book,
         @RequestParam("author") Long authorId,
-        @RequestParam("genres") List<Long> genreIds
+        @RequestParam(value = "genres", required = false) List<Long> genreIds
     ) {
         Author author = authorService.findById(authorId);
-        List<Genre> genres = genreService.findAllByIds(genreIds);
+        List<Genre> genres = genreService.findAllByIds(Optional.ofNullable(genreIds).orElse(List.of()));
         bookService.save(book.toBuilder().author(author).genres(genres).build());
 
         return "redirect:/book";
