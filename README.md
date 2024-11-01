@@ -16,3 +16,4 @@
 - [ДЗ 6](hw06-spring-jpa)
 - [ДЗ 7](hw07-spring-data-jpa)
 - [ДЗ 8](hw08-mongo)
+- [ДЗ 10](hw10-spring-mvc-rest)
