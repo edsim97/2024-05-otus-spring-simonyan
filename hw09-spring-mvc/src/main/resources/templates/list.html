@@ -63,12 +63,14 @@
                 <span class="genre-cell" th:each="genre: *{genres}" th:text="${genre.name}"></span>
             </td>
             <td class="cell">
-                <a class="pure-button pure-button-primary" href="edit.html" th:href="@{/book/edit(id=${book.id})}">
-                    Update
-                </a>
-                <a class="pure-button pure-button-primary" href="edit.html" th:href="@{/book/__*{id}__/delete}">
-                    Delete
-                </a>
+                <form action="edit.html" th:action="@{/book/__*{id}__/delete}" th:method="post">
+                    <a class="pure-button pure-button-primary" href="edit.html" th:href="@{/book/edit(id=${book.id})}">
+                        Update
+                    </a>
+                    <button class="pure-button pure-button-primary" type="submit">
+                        Delete
+                    </button>
+                </form>
             </td>
         </tr>
         <tr>

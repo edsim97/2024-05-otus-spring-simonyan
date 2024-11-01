@@ -3,7 +3,6 @@ package ru.otus.hw.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,7 +72,7 @@ public class BookController {
     }
 
     // Через DeleteMapping не получилось сделать. Часа 3 гуглил, пробовал разные подходы, но ничего не помогло :(
-    @GetMapping("/book/{id}/delete")
+    @PostMapping("/book/{id}/delete")
     public String deleteBook(@PathVariable("id") long id, Model model) {
 
         bookService.deleteById(id);
