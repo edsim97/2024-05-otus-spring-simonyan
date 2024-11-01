@@ -69,7 +69,7 @@
 
         <div class="row">
             <label for="author-input">Author:</label>
-            <select class="input" id="author-input" name="author">
+            <select class="input" id="author-input" name="authorId">
                 <option
                         th:each="author : ${authors}"
                         th:value="${author.id}"
@@ -82,7 +82,7 @@
 
         <div class="row">
             <label for="genres-input">Genres:</label>
-            <select class="input" id="genres-input" name="genres" multiple>
+            <select class="input" id="genres-input" name="genreIds" multiple>
                 <option
                         th:each="genre : ${genres}"
                         th:value="${genre.id}"

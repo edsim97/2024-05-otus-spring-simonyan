@@ -61,8 +61,8 @@ public class BookController {
     @PostMapping("/book")
     public String saveBook(
         @ModelAttribute Book book,
-        @RequestParam("author") Long authorId,
-        @RequestParam(value = "genres", required = false) List<Long> genreIds
+        @RequestParam("authorId") Long authorId,
+        @RequestParam(value = "genreIds", required = false) List<Long> genreIds
     ) {
         Author author = authorService.findById(authorId);
         List<Genre> genres = genreService.findAllByIds(Optional.ofNullable(genreIds).orElse(List.of()));
