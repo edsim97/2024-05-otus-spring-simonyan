@@ -72,6 +72,7 @@ public class BookController {
         return "redirect:/book";
     }
 
+    // Через DeleteMapping не получилось сделать. Часа 3 гуглил, пробовал разные подходы, но ничего не помогло :(
     @GetMapping("/book/{id}/delete")
     public String deleteBook(@PathVariable("id") long id, Model model) {
 
