@@ -12,8 +12,8 @@ import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } f
     template: `
     <div class="book-edit">
         <h2>
-            @if (!!book?.id) {
-                Edit book {{book.id}}
+            @if (!!book()?.id) {
+                Edit book {{book().id}}
             }
             @else {
                 Create new book
@@ -43,7 +43,7 @@ import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } f
         </ng-container>
         
         <div class="buttons-group">
-            <button mat-raised-button color="primary" (click)="save()">{{ !!book?.id ? "Update" : "Create" }}</button>
+            <button mat-raised-button color="primary" (click)="save()">{{ !!book()?.id ? "Update" : "Create" }}</button>
             <button mat-raised-button color="secondary" (click)="cancel()">Cancel</button>
         </div>
     </div>
@@ -77,7 +77,7 @@ export class EditBookDialog {
 
     readonly dialogRef = inject(MatDialogRef<EditBookDialog>);
     readonly data = inject<{book: Book, allAuthors: Observable<Author[]>, allGenres: Observable<Genre[]>}>(MAT_DIALOG_DATA);
-    readonly book = this.data.book;
+    readonly book = model(this.data.book);
     readonly allAuthors = model(this.data.allAuthors);
     readonly allGenres = model(this.data.allGenres);
 
@@ -86,17 +86,12 @@ export class EditBookDialog {
         title: FormControl<string | null>,
         author: FormControl<Author | null>,
         genres: FormControl<Genre[] | null>,
-    }>;
-
-    constructor() {
-
-        this.formGroup = new FormGroup({
-            id: new FormControl(this.book?.id),
-            title: new FormControl(this.book?.title),
-            author: new FormControl(this.book?.author),
-            genres: new FormControl(this.book?.genres),
-        });
-    }
+    }> = new FormGroup({
+        id: new FormControl(this.book()?.id),
+        title: new FormControl(this.book()?.title),
+        author: new FormControl(this.book()?.author),
+        genres: new FormControl(this.book()?.genres),
+    });
 
     save() {
 
