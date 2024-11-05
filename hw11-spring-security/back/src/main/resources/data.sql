@@ -1,3 +1,11 @@
+insert into users(displayed_name, username, password)
+values ('admin', 'admin', 'admin'),
+       ('user', 'user', 'user');
+
+insert into user_roles (user_id, name)
+values (1, 'DBReader'), (1, 'DBWriter'),
+       (2, 'DBReader');
+
 insert into authors(full_name)
 values ('Author_1'), ('Author_2'), ('Author_3');
 
