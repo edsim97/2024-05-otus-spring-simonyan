@@ -16,4 +16,6 @@
 - [ДЗ 6](hw06-spring-jpa)
 - [ДЗ 7](hw07-spring-data-jpa)
 - [ДЗ 8](hw08-mongo)
+- [ДЗ 9](hw09-spring-mvc)
+- [ДЗ 10](hw10-spring-mvc-rest)
 - [ДЗ 11](hw11-spring-security)
