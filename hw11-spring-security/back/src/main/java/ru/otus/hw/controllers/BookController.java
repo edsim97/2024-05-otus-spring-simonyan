@@ -19,19 +19,19 @@ public class BookController {
 
     private final BookService bookService;
 
-    @GetMapping("/api/book")
+    @GetMapping("/api/books")
     public List<Book> getBooks() {
 
         return bookService.findAll();
     }
 
-    @PostMapping("/api/book")
+    @PostMapping("/api/books")
     public void saveBook(@RequestBody Book book) {
 
         bookService.save(book);
     }
 
-    @DeleteMapping("/api/book/{id}")
+    @DeleteMapping("/api/books/{id}")
     public void deleteBook(@PathVariable("id") long id) {
 
         bookService.deleteById(id);

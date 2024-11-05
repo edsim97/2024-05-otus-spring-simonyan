@@ -12,12 +12,12 @@ export class AppService {
 
     getAllBooks(): Observable<Book[]> {
 
-        return this.http.get<Book[]>("api/book");
+        return this.http.get<Book[]>("api/books");
     }
 
     saveBook(book: Book) {
 
-        return this.http.post(`api/book`, { ...book })
+        return this.http.post(`api/books`, { ...book })
             .pipe(
                 map((result) => true),
                 catchError(err => of(false)),
@@ -26,7 +26,7 @@ export class AppService {
 
     deleteBook(id: number) {
 
-        return this.http.delete(`api/book/${id}`)
+        return this.http.delete(`api/books/${id}`)
             .pipe(
                 map((result) => true),
                 catchError(err => of(false)),
@@ -35,11 +35,11 @@ export class AppService {
 
     getAllAuthors(): Observable<Author[]> {
 
-        return this.http.get<Author[]>("api/author");
+        return this.http.get<Author[]>("api/authors");
     }
 
     getAllGenres(): Observable<Genre[]> {
 
-        return this.http.get<Genre[]>("api/genre");
+        return this.http.get<Genre[]>("api/genres");
     }
 }
