@@ -15,4 +15,5 @@
 - [ДЗ 5](hw05-jdbc-hard)
 - [ДЗ 6](hw06-spring-jpa)
 - [ДЗ 7](hw07-spring-data-jpa)
+- [ДЗ 8](hw08-mongo)
 - [ДЗ 9](hw09-spring-mvc)
