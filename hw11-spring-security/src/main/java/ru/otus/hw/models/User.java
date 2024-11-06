@@ -44,7 +44,7 @@ public class User implements UserDetails {
     @OneToMany(
         mappedBy = "user",
         cascade = CascadeType.ALL,
-        fetch = FetchType.EAGER,
+        fetch = FetchType.LAZY,
         orphanRemoval = true
     )
     private List<Role> roles;
