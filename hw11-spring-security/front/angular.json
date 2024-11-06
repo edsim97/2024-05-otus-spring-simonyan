@@ -1,9 +1,9 @@
 {
-  "$schema": "../../hw10-spring-mvc-rest-ui/node_modules/@angular/cli/lib/config/schema.json",
+  "$schema": "../../hw11-spring-security/front/node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "hw10-spring-mvc-rest-ui": {
+    "hw11-spring-security": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/hw10-spring-mvc-rest-ui",
+            "outputPath": "dist/hw11-spring-security",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -35,12 +35,7 @@
               "@angular/material/prebuilt-themes/magenta-violet.css",
               "src/styles.scss"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -70,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "hw10-spring-mvc-rest-ui:build:production"
+              "buildTarget": "hw11-spring-security:build:production"
             },
             "development": {
-              "buildTarget": "hw10-spring-mvc-rest-ui:build:development"
+              "buildTarget": "hw11-spring-security:build:development"
             }
           },
           "defaultConfiguration": "development",

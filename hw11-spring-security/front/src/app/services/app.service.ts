@@ -1,14 +1,15 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { HttpClient, HttpResponse } from "@angular/common/http";
+import { inject, Injectable } from "@angular/core";
 import { catchError, map, Observable, tap, of } from "rxjs";
-import { Author, Book, Genre } from "./app.component";
+import { Book } from "../models/book";
+import { Genre } from "../models/genre";
+import { Author } from "../models/author";
 
 @Injectable({ providedIn: "root" })
 export class AppService {
 
+    http = inject(HttpClient);
     displayedColumns = [ "id", "title", "author", "genres" ];
-
-    constructor(private http: HttpClient) { }
 
     getAllBooks(): Observable<Book[]> {
 
@@ -41,5 +42,14 @@ export class AppService {
     getAllGenres(): Observable<Genre[]> {
 
         return this.http.get<Genre[]>("api/genres");
+    }
+
+    login(credentials: { username: string, password: string }) {
+
+        return this.http.post(
+            "api/auth/login",
+            credentials,
+            { observe: "response", responseType: "text" }
+        );
     }
 }

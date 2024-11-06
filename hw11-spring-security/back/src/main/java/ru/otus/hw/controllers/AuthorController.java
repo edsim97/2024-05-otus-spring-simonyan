@@ -8,8 +8,8 @@ import ru.otus.hw.services.AuthorService;
 
 import java.util.List;
 
-@RestController
 @RequiredArgsConstructor
+@RestController
 public class AuthorController {
 
     private final AuthorService authorService;

@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, model } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { MatInputModule } from "@angular/material/input";
-import { MatSelectModule } from "@angular/material/select";
-import { filter, Observable, of, switchMap, take } from 'rxjs';
-import { CommonModule } from '@angular/common';import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from "@angular/material/dialog";
-import { Author, Book, Genre } from "../app.component";
-import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { Observable } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { FormControl, FormGroup } from "@angular/forms";
+import { Book } from "../../models/book";
+import { Author } from "../../models/author";
+import { Genre } from "../../models/genre";
 
 @Component({
     selector: "edit-book-dialog",
@@ -61,22 +60,12 @@ import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } f
             justify-content: space-around;
         }
     `,
-    standalone: true,
-    imports: [
-        CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatInputModule,
-        MatSelectModule
-    ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditBookDialog {
 
     readonly dialogRef = inject(MatDialogRef<EditBookDialog>);
-    readonly data = inject<{book: Book, allAuthors: Observable<Author[]>, allGenres: Observable<Genre[]>}>(MAT_DIALOG_DATA);
+    readonly data = inject<{ book: Book, allAuthors: Observable<Author[]>, allGenres: Observable<Genre[]> }>(MAT_DIALOG_DATA);
     readonly book = model(this.data.book);
     readonly allAuthors = model(this.data.allAuthors);
     readonly allGenres = model(this.data.allGenres);

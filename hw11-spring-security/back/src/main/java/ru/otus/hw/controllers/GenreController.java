@@ -8,13 +8,13 @@ import ru.otus.hw.services.GenreService;
 
 import java.util.List;
 
-@RestController
 @RequiredArgsConstructor
+@RestController("/api")
 public class GenreController {
 
     private final GenreService genreService;
 
-    @GetMapping("/api/genres")
+    @GetMapping("/genres")
     public List<Genre> getGenres() {
 
         return genreService.findAll();

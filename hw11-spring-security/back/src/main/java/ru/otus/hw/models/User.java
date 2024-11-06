@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @EqualsAndHashCode
 @Entity
@@ -28,16 +30,16 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final long id;
+    private long id;
 
     @Column(name = "displayed_name")
-    private final String displayedName;
+    private String displayedName;
 
     @Column(name = "username")
-    private final String username;
+    private String username;
 
     @Column(name = "password")
-    private final String password;
+    private String password;
 
     @OneToMany(
         mappedBy = "user",
@@ -45,7 +47,7 @@ public class User implements UserDetails {
         fetch = FetchType.EAGER,
         orphanRemoval = true
     )
-    private final List<Role> roles;
+    private List<Role> roles;
 
     @Override
     public List<GrantedAuthority> getAuthorities() {
