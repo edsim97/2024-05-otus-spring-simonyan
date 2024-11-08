@@ -7,31 +7,40 @@ import org.mockito.invocation.InvocationOnMock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.otus.hw.configurations.SecurityConfiguration;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
-import ru.otus.hw.services.AuthorService;
+import ru.otus.hw.models.User;
 import ru.otus.hw.services.BookService;
-import ru.otus.hw.services.GenreService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.anyList;
 import static org.mockito.BDDMockito.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("Контроллер с методами для работы с книгами должен")
 @WebMvcTest(BookController.class)
+@Import({SecurityConfiguration.class})
 public class BookControllerTest {
 
     @Autowired
@@ -41,15 +50,20 @@ public class BookControllerTest {
     private ObjectMapper mapper;
 
     @MockBean
-    private AuthorService authorService;
-
-    @MockBean
     private BookService bookService;
 
     @MockBean
-    private GenreService genreService;
+    private UserDetailsService userDetailsService;
+
+    @BeforeTestClass
+    void beforeAll() {
+
+        given(userDetailsService.loadUserByUsername(anyString()))
+            .willReturn(new User(1, "admin", "admin", "admin", List.of()));
+    }
 
     @DisplayName("возвращать все книги")
+    @WithMockUser(username = "admin", password = "admin")
     @Test
     void shouldReturnAllBooks() throws Exception {
 
@@ -60,68 +74,74 @@ public class BookControllerTest {
         );
         given(bookService.findAll()).willReturn(bookList);
 
-        mvc.perform(get("/book"))
+        mvc.perform(get("/api/books"))
             .andExpect(status().isOk())
-            .andExpect(model().attribute("books", bookList));
+            .andExpect(content().json(mapper.writeValueAsString(bookList)));
     }
 
-    @DisplayName("возвращать модели для создания книги")
+    @DisplayName("возвращать все книги")
     @Test
-    void shouldReturnCreateBookPageModels() throws Exception {
+    void shouldRedirectToLogin() throws Exception {
 
-        List<Author> authorList = List.of(new Author(1, "Test1"), new Author(2, "Test2"), new Author(3, "Test3"));
-        List<Genre> genreList = List.of(new Genre(1, "Test1"), new Genre(2, "Test2"), new Genre(3, "Test3"));
-        given(authorService.findAll()).willReturn(authorList);
-        given(genreService.findAll()).willReturn(genreList);
+        given(bookService.findAll()).willReturn(List.of());
+        given(bookService.findById(anyLong())).willReturn(Optional.empty());
+        given(bookService.save(any())).willReturn(null);
+        doNothing().when(bookService).deleteById(anyLong());
 
-        mvc.perform(get("/book/create"))
-            .andExpect(status().isOk())
-            .andExpect(model().attribute("book", new Book()))
-            .andExpect(model().attribute("authors", authorList))
-            .andExpect(model().attribute("genres", genreList));
+        mvc.perform(get("/api/books"))
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("http://localhost/login"));
+
+        mvc.perform(get("/api/books/1"))
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("http://localhost/login"));
+
+        mvc
+            .perform(post("/api/books")
+                .content(mapper.writeValueAsString(new Book()))
+                .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("http://localhost/login"));
+
+        mvc.perform(delete("/api/books/1"))
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("http://localhost/login"));
+
     }
 
-    @DisplayName("возвращать модели для редактирования книги")
+    @DisplayName("возвращать одну книгу")
+    @WithMockUser(username = "admin", password = "admin")
     @Test
-    void shouldReturnEditBookPageModels() throws Exception {
+    void shouldReturnBook() throws Exception {
 
-        List<Author> authorList = List.of(new Author(1, "Test1"), new Author(2, "Test2"), new Author(3, "Test3"));
-        List<Genre> genreList = List.of(new Genre(1, "Test1"), new Genre(2, "Test2"), new Genre(3, "Test3"));
-        Book book = new Book(1, "TEST", new Author(1, "Test1"), genreList);
-
-        given(authorService.findAll()).willReturn(authorList);
-        given(genreService.findAll()).willReturn(genreList);
+        Book book = new Book(1, "Test1", new Author(1, "Test1"), List.of(new Genre(1, "Test1"), new Genre(2, "Test2")));
         given(bookService.findById(anyLong())).willReturn(Optional.of(book));
 
-        mvc.perform(get("/book/edit").queryParam("id", "1"))
+        mvc.perform(get("/api/books/1"))
             .andExpect(status().isOk())
-            .andExpect(model().attribute("book", book))
-            .andExpect(model().attribute("authors", authorList))
-            .andExpect(model().attribute("genres", genreList));
+            .andExpect(content().json(mapper.writeValueAsString(book)));
     }
 
     @DisplayName("сохранять книгу")
+    @WithMockUser(username = "admin", password = "admin")
     @Test
     void shouldSaveBook() throws Exception {
 
         List<Book> savedBooks = new ArrayList<>();
         Book book = new Book(1, "TEST", null, null);
 
-        given(authorService.findById(anyLong())).willReturn(null);
-        given(genreService.findAllByIds(anyList())).willReturn(null);
         given(bookService.save(any())).will((InvocationOnMock invocation) -> {
             savedBooks.add(invocation.getArgument(0));
             return invocation.getArgument(0);
         });
 
         mvc
-            .perform(post("/book")
-                .queryParam("id", "1")
-                .queryParam("title", "TEST")
-                .queryParam("authorId", "0")
-                .queryParam("genresIds", "0")
+            .perform(post("/api/books")
+                .content(mapper.writeValueAsString(book))
+                .contentType(MediaType.APPLICATION_JSON)
             )
-            .andExpect(status().isFound());
+            .andExpect(status().isOk());
 
         assertThat(savedBooks)
             .hasSize(1)
@@ -130,6 +150,7 @@ public class BookControllerTest {
     }
 
     @DisplayName("удалять книгу")
+    @WithMockUser(username = "admin", password = "admin")
     @Test
     void shouldDeleteBook() throws Exception {
 
@@ -139,7 +160,7 @@ public class BookControllerTest {
         doAnswer(invocation -> books.removeIf(b -> b.getId() == ((Long) invocation.getArgument(0))))
             .when(bookService).deleteById(anyLong());
 
-        mvc.perform(post("/book/1/delete")).andExpect(status().isFound());
+        mvc.perform(delete("/api/books/1")).andExpect(status().isOk());
 
         assertThat(books).hasSize(0);
     }
