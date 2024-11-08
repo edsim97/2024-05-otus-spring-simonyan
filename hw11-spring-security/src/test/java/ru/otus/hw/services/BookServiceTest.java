@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
@@ -18,8 +20,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@DisplayName("Сервис для BookComment должен")
-@SpringBootTest
+@DisplayName("Сервис для Book должен")
+@Transactional(propagation = Propagation.NEVER)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class BookServiceTest {
 
     private final BookRepository bookRepository;

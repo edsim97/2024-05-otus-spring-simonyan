@@ -42,7 +42,7 @@ public class Book {
     @EqualsAndHashCode.Exclude
     private Author author;
 
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinTable(
         name = "books_genres",
         joinColumns = @JoinColumn(name = "book_id", referencedColumnName = "id"),
