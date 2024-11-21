@@ -1,6 +1,6 @@
 insert into users(displayed_name, username, password)
-values ('admin', 'admin', 'admin'),
-       ('user', 'user', 'user');
+values ('admin', 'admin', '$2a$10$PDxQyZpoFfT5pk53YTjWd.MRc07eQS0VxHR.eetyWCFdjMtWiOtqu'),--password=admin
+       ('user', 'user', '$2a$10$KDeVQnKeRNYnJXznt/EZteMHaBxyBwQmwJkyrCANoKkdhlKc7eOcm');--password=user
 
 insert into user_roles (user_id, name)
 values (1, 'DBReader'), (1, 'DBWriter'),

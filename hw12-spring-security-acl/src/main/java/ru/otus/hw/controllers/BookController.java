@@ -1,6 +1,7 @@
 package ru.otus.hw.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,12 +32,14 @@ public class BookController {
     }
 
     @PostMapping("/api/books")
+    @PreAuthorize("hasAuthority('DBWriter')")
     public void saveBook(@RequestBody Book book) {
 
         bookService.save(book);
     }
 
     @DeleteMapping("/api/books/{id}")
+    @PreAuthorize("hasAuthority('DBWriter')")
     public void deleteBook(@PathVariable("id") long id) {
 
         bookService.deleteById(id);
