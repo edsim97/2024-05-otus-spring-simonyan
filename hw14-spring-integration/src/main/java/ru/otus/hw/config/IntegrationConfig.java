@@ -8,10 +8,7 @@ import org.springframework.integration.dsl.MessageChannelSpec;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.PollerSpec;
 import org.springframework.integration.dsl.Pollers;
-import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.scheduling.PollerMetadata;
-import org.springframework.messaging.Message;
-import ru.otus.hw.models.Cocktail;
 import ru.otus.hw.services.CocktailDbApiClient;
 
 @Configuration
