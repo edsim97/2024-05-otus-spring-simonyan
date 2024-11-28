@@ -16,7 +16,6 @@ public class GenreController {
     private final GenreService genreService;
 
     @GetMapping("/api/genres")
-    @PreAuthorize("hasAuthority('DBReader')")
     public List<Genre> getGenres() {
 
         return genreService.findAll();

@@ -3,6 +3,7 @@ package ru.otus.hw.configurations;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,19 +27,18 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(configurer -> configurer
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-            )
+            .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/login").permitAll()
+                .requestMatchers("/books/edit").hasAuthority("DBWriter")
+                .requestMatchers(HttpMethod.GET).hasAuthority("DBReader")
+                .requestMatchers(HttpMethod.POST).hasAuthority("DBWriter")
+                .requestMatchers(HttpMethod.DELETE).hasAuthority("DBWriter")
                 .anyRequest().authenticated()
             )
             .formLogin(Customizer.withDefaults())
             .userDetailsService(userDetailsService)
-            .rememberMe(configurer -> configurer
-                .key("LibraryAuthToken")
-                .tokenValiditySeconds(600)
-            );
+            .rememberMe(configurer -> configurer.key("LibraryAuthToken").tokenValiditySeconds(600));
 
         return http.build();
     }

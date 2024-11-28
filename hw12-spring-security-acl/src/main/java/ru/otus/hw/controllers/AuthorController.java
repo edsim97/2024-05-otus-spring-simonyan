@@ -16,7 +16,6 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping("/api/authors")
-    @PreAuthorize("hasAuthority('DBReader')")
     public List<Author> getAuthors() {
 
         return authorService.findAll();

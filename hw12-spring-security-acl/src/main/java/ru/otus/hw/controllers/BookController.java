@@ -20,28 +20,24 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/api/books")
-    @PreAuthorize("hasAuthority('DBReader')")
     public List<Book> getBooks() {
 
         return bookService.findAll();
     }
 
     @GetMapping("/api/books/{id}")
-    @PreAuthorize("hasAuthority('DBReader')")
     public Book getBooks(@PathVariable("id") long id) {
 
         return bookService.findById(id).orElse(null);
     }
 
     @PostMapping("/api/books")
-    @PreAuthorize("hasAuthority('DBWriter')")
     public void saveBook(@RequestBody Book book) {
 
         bookService.save(book);
     }
 
     @DeleteMapping("/api/books/{id}")
-    @PreAuthorize("hasAuthority('DBWriter')")
     public void deleteBook(@PathVariable("id") long id) {
 
         bookService.deleteById(id);
