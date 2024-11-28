@@ -18,3 +18,4 @@
 - [ДЗ 8](hw08-mongo)
 - [ДЗ 9](hw09-spring-mvc)
 - [ДЗ 10](hw10-spring-mvc-rest)
+- [ДЗ 15](hw15-spring-actuator)
