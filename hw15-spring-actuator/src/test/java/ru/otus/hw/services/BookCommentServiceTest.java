@@ -15,10 +15,10 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @DisplayName("Сервис для BookComment должен")
-@SpringBootTest
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Transactional(propagation = Propagation.NEVER)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 public class BookCommentServiceTest {
 
     private final BookCommentServiceImpl bookCommentService;

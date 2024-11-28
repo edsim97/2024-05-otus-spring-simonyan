@@ -9,6 +9,10 @@
             integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls"
             crossorigin="anonymous"
     >
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
     <style>
         body {
             padding: 0;
@@ -55,32 +59,52 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="book: ${books}" th:object="${book}">
-            <td class="cell" th:text="*{id}"></td>
-            <td class="cell" th:text="*{title}"></td>
-            <td class="cell" th:text="*{author != null} ? *{author.fullName} : '-'"></td>
-            <td class="cell">
-                <span class="genre-cell" th:each="genre: *{genres}" th:text="${genre.name}"></span>
-            </td>
-            <td class="cell">
-                <form action="edit.html" th:action="@{/book/__*{id}__/delete}" th:method="post">
-                    <a class="pure-button pure-button-primary" href="edit.html" th:href="@{/book/edit(id=${book.id})}">
-                        Update
-                    </a>
-                    <button class="pure-button pure-button-primary" type="submit">
-                        Delete
-                    </button>
-                </form>
-            </td>
-        </tr>
+
         <tr>
             <td colspan="5">
-                <a class="pure-button pure-button-primary" href="edit.html" th:href="@{/book/create}">+ Create new</a>
+                <a class="pure-button pure-button-primary" href="/books/edit?id=0">+ Create new</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
+
+<script>
+    $(function () {
+        $.get('/api/books').done((books) => {
+            books.reverse().forEach((book) => {
+                $('tbody').prepend(`
+                    <tr>
+                        <td class="cell">${book.id}</td>
+                        <td class="cell">${book.title}</td>
+                        <td class="cell">${book.author != null ? book.author.fullName : '-'}</td>
+                        <td class="cell" id="genres"></td>
+                        <td class="cell">
+                            <a class="pure-button pure-button-primary" href="/books/edit?id=${book.id}">
+                                Update
+                            </a>
+                            <button class="pure-button pure-button-primary" onclick="deleteBook(${book.id})">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                `);
+
+                (book.genres || []).forEach(genre =>
+                    $('#genres').append(`<span class="genre-cell">${genre.name}</span>`)
+                );
+            });
+        })
+    });
+
+    function deleteBook(id) {
+        $.ajax({
+            url: '/api/books/' + id,
+            type: 'DELETE',
+            success: () => location.reload()
+        });
+    }
+</script>
 
 </body>
 </html>
