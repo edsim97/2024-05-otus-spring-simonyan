@@ -28,6 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("Контроллер с методами для работы с книгами должен")
@@ -114,5 +115,36 @@ public class BookControllerRolesTest {
             )
             .andExpect(status().isForbidden());
         mvc.perform(delete("/api/books/1")).andExpect(status().isForbidden());
+    }
+
+    @DisplayName("редиректить на страницу логина")
+    @Test
+    void shouldRedirectToLogin() throws Exception {
+
+        given(bookService.findAll()).willReturn(List.of());
+        given(bookService.findById(anyLong())).willReturn(Optional.empty());
+        given(bookService.save(any())).willReturn(null);
+        doNothing().when(bookService).deleteById(anyLong());
+
+        mvc.perform(get("/api/books"))
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("http://localhost/login"));
+
+        mvc.perform(get("/api/books/1"))
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("http://localhost/login"));
+
+        mvc
+            .perform(post("/api/books")
+                .content(mapper.writeValueAsString(new Book()))
+                .contentType(MediaType.APPLICATION_JSON)
+            )
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("http://localhost/login"));
+
+        mvc.perform(delete("/api/books/1"))
+            .andExpect(status().isFound())
+            .andExpect(redirectedUrl("http://localhost/login"));
+
     }
 }
