@@ -19,3 +19,4 @@
 - [ДЗ 9](hw09-spring-mvc)
 - [ДЗ 10](hw10-spring-mvc-rest)
 - [ДЗ 11](hw11-spring-security)
+- [ДЗ 12](hw12-spring-security-acl)
