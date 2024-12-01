@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit book</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+            integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls"
+            crossorigin="anonymous"
+    >
+    <script
+            src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+            crossorigin="anonymous"></script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            padding-top: 32px;
+            background-color: #e5e5e5;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .page {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0px 8px 8px -2px rgba(34, 60, 80, 0.2);
+        }
+
+        .row {
+            padding: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .input {
+            width: 200px;
+        }
+
+        .buttons-group {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <form
+        class="pure-form"
+        id="edit-form"
+    >
+
+        <input id="id-input" name="id" type="hidden" />
+
+        <div class="row">
+            <label for="title-input">Title:</label>
+            <input class="input" id="title-input" name="title" type="text" />
+        </div>
+
+        <div class="row">
+            <label for="author-input">Author:</label>
+            <select class="input" id="author-input" name="authorId"></select>
+        </div>
+
+        <div class="row">
+            <label for="genres-input">Genres:</label>
+            <select class="input" id="genres-input" name="genreIds" multiple></select>
+        </div>
+    </form>
+
+    <div class="buttons-group">
+        <button class="pure-button pure-button-primary" onclick="save()">Save</button>
+        <a class="pure-button pure-button-secondary" href="/books">Cancel</a>
+    </div>
+</div>
+
+<script>
+    let genres;
+    let authors;
+    $(function() {
+        const id = getUrlParameter("id");
+        let foundBook = null;
+
+        $.when($.get("/api/authors"), $.get("/api/genres")).done((a, g) => {
+            authors = a[0];
+            authors.forEach(author =>
+                $("#author-input").append(`<option value="${author.id}">${author.fullName}</option>`)
+            );
+            genres = g[0];
+            genres.forEach(genre =>
+                $("#genres-input").append(`<option value="${genre.id}">${genre.name}</option>`)
+            );
+            if (!!id && id > 0) {
+
+                $("#edit-form").prepend(`<h2>Book ${id} info</h2>`);
+                $.get("/api/books/" + id).done(book => {
+                    foundBook = book;
+                    $("#id-input").val(book.id);
+                    $("#title-input").val(book.title);
+
+                    if (!!book.author) {
+
+                        $(`#author-input option[value=${book.author.id}]`).prop("selected", true);
+                    }
+                    (book.genres || []).forEach(bookGenre =>
+                        $(`#genres-input option[value=${bookGenre.id}]`).prop("selected", true)
+                    );
+                });
+            } else {
+
+                $("#edit-form").prepend('<h2>Creating book</h2>');
+            }
+        });
+    });
+
+    function save() {
+
+        const authorId = $("#author-input").val();
+        const selectedGenres = $("#genres-input").val();
+        const book = {
+            id: $("#id-input").val(),
+            title: $("#title-input").val(),
+            author: authors.find(author => author.id == authorId),
+            genres: genres.filter(genre => selectedGenres.some(id => id == genre.id))
+        };
+        $.ajax({
+            type: "POST",
+            url: "/api/books",
+            data: JSON.stringify(book),
+            success: function() { window.location.href = "/books"; },
+            contentType: "application/json",
+        });
+    }
+
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+        return false;
+    };
+</script>
+
+</body>
+</html>
