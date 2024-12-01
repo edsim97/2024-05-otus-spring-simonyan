@@ -22,3 +22,4 @@
 - [ДЗ 12](hw12-spring-security-acl)
 - [ДЗ 13](hw13-spring-batch)
 - [ДЗ 14](hw14-spring-integration)
+- [ДЗ 15](hw15-spring-actuator)

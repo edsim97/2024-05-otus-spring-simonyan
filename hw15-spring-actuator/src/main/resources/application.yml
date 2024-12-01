@@ -1,0 +1,44 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    logfile:
+      enabled: true
+  health:
+    defaults:
+      enabled: true
+
+spring:
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  messages:
+    encoding: UTF-8
+
+  datasource:
+    url: jdbc:h2:mem:maindb
+
+  sql:
+    init:
+      mode: always
+
+  jpa:
+    open-in-view: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+
+logging:
+  level:
+    ROOT: DEBUG
+  file:
+    name: application.log
